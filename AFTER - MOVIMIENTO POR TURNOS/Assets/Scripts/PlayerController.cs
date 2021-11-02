@@ -6,7 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speedPlayer = 5f;
     [SerializeField] private float cameraAxisX = -90f;
-   
+
+    [SerializeField] AudioClip clipWalk;
+    [SerializeField] AudioClip clipShoot;
+
+
     // Start is called before the first frame update
     private bool isRun   = false;
     private bool isShoot = false;
@@ -14,9 +18,13 @@ public class PlayerController : MonoBehaviour
 
     private Animator animPlayer;
 
+    private AudioSource audioPlayer;
+
+
     void Start()
     {
         animPlayer = GetComponent<Animator>();
+        audioPlayer = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,6 +59,10 @@ public class PlayerController : MonoBehaviour
             isRun = true;
             Vector3 direction = new Vector3(ejeHorizontal, 0, ejeVertical);
             transform.Translate(speedPlayer * Time.deltaTime * direction);
+            if (!audioPlayer.isPlaying)
+            {
+                audioPlayer.PlayOneShot(clipWalk, 0.5f);
+            }
         }
         else
         {
@@ -67,6 +79,7 @@ public class PlayerController : MonoBehaviour
     private void Shoot()
     {
         Debug.Log("SHOOOOOOOOOOOOOOOT");
+        audioPlayer.PlayOneShot(clipShoot, 1f);
         isShoot = true;
     }
 
